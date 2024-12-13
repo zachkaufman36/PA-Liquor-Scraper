@@ -106,9 +106,11 @@ def search_facts(search, url):
                                 store_name = address.find('h4').text
                                 street_address = address.find_all('p')[0].text
                                 city_state_zip = address.find_all('p')[1].text
+                                # hyper_link = location_text.find('a', href = True, text = "Get Directions") get the hyperlink at some point
                                 file.write(f"Store Name: {store_name}\n")
                                 file.write(f"Street Address: {street_address}\n")
                                 file.write(f"City/State/Zip: {city_state_zip}\n")
+                                # file.write(f"Google Maps: {hyper_link['href']}\n") 
                                 file.write("-" * 20)
                                 file.write("\n")
 
