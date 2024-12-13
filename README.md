@@ -39,3 +39,7 @@ Currently it enters a zipcode. If that zipcode changes just change the global va
 
 ## How Many Runs A Day
 Currently it's configured to run once a day. If you wish to run it multiple times a day I recommend going to line 10 and removing the .date(). This will change the filename to be the date and current time, allowing you to not write over previous runs. 
+
+
+# AUTOMATIC SCHEDULING
+Refer to this website: https://phoenixnap.com/kb/cron-job-mac
