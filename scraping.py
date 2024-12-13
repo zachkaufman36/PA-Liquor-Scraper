@@ -5,10 +5,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 from datetime import datetime
 import re
+import email_automator
 
 url = 'https://www.finewineandgoodspirits.com/'
 output_file_name = "valid_stores_" + str(datetime.now().date()) + ".txt"
-TEST = False
+TEST = True
 MAX_ZIPCODE = '19103'
 
 def open_page(url):
@@ -90,7 +91,7 @@ def search_facts(search, url):
                         distance = float(match.group(1))
 
                         # CHANGE THIS IF YOU WANT TO ADJUST YOUR DISTANCE RANGE
-                        if distance < 5.0:
+                        if distance < 50.0:
 
                             # Find the address of this store
                             address = card.find('div', class_='address')
@@ -121,6 +122,17 @@ def main():
         inputs = file.readlines()
         for i in inputs:
             url_constructor(url, (search_results(url, i)))
+
+    with open(output_file_name, "r") as f:
+        body = f.read()
+
+    if TEST:
+        recipient = "zachkaufman36@gmail.com"
+
+    else:
+        recipient = "maxkaufman@ymail.com"
+        
+    email_automator.send_email(body, recipient)
 
 
 if __name__ == '__main__':
