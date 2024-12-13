@@ -13,5 +13,6 @@ source venv/bin/activate
 pip3 install -r requirements.txt
 python3 scraping.py
 deactivate
+rm -r output
 
-exit
+osascript -e 'tell application "Terminal" to close first window' & exit

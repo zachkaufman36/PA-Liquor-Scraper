@@ -4,13 +4,18 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 from datetime import datetime
+import os
 import re
 import email_automator
 
 url = 'https://www.finewineandgoodspirits.com/'
-output_file_name = "valid_stores_" + str(datetime.now().date()) + ".txt"
-TEST = True
+if not os.path.isdir("output"):
+    os.mkdir("output")
+output_file = "valid_stores_" + str(datetime.now().date()) + ".txt"
+output_file_name = os.path.join("output", output_file)
+TEST = False
 MAX_ZIPCODE = '19103'
+
 
 def open_page(url):
     # Set up web browser
