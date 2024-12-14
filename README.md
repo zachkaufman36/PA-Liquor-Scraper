@@ -32,6 +32,11 @@ source venv/bin/activate
 3. Double click run_mac.command
 
 
+# TO RUN FROM FILE EXPLORER
+
+1. Double click on the run_windows.bat (may just display as run_windows). If it doesn't work try running as administrator
+
+
 # ADJUSTMENTS
 
 ## Distance From You
