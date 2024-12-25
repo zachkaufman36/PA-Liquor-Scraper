@@ -13,7 +13,7 @@ if not os.path.isdir("output"):
     os.mkdir("output")
 output_file = "valid_stores_" + str(datetime.now().date()) + ".txt"
 output_file_name = os.path.join("output", output_file)
-TEST = False
+TEST = True
 MAX_ZIPCODE = '19103'
 
 
@@ -39,27 +39,42 @@ def open_page(url):
 
 def search_results(url, search):
     
-    driver = open_page(url)
-    wait = WebDriverWait(driver, 3)
+    try:
+        driver = open_page(url)
+        wait = WebDriverWait(driver, 3)
 
-    # Enter value into search box
-    search_box = driver.find_element(By.XPATH, "//input[@type = 'text']")
-    search_button = driver.find_element(By.XPATH, "//button[@aria-label = 'Search Icon']")
-    search_box.send_keys(search)
-    search_button.click()
-    wait.until(EC.visibility_of_all_elements_located((By.CLASS_NAME, 'product-card-link')))
+        # Enter value into search box
+        search_box = driver.find_element(By.XPATH, "//input[@type = 'text']")
+        search_button = driver.find_element(By.XPATH, "//button[@aria-label = 'Search Icon']")
+        search_box.send_keys(search)
+        search_button.click()
+        wait.until(EC.visibility_of_all_elements_located((By.CLASS_NAME, 'product-card-link')))
 
-    # Parse page to get all items on that page
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    found = (soup.find_all('a', {'class': 'product-card-link'}))
+        # Parse page to get all items on that page
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        found = (soup.find_all('a', {'class': 'product-card-link'}))
+        driver.quit()
+        return {href.get('aria-label'): href.get('href') for href in found}
+    
+    except:
+        error_writing()
+        driver.quit()
 
-    driver.quit()
-    return {href.get('aria-label'): href.get('href') for href in found}
+
+def error_writing():
+    with open(output_file_name, 'a') as file:
+        file.write("-" * 20)
+        file.write("\n")
+        file.write("Not found on website\n")
+        file.write("-" * 20)
+        file.write("\n")
+    
 
 # Creates urls out of the search result's hrefs
 def url_constructor(url, search_results):
-    for result in search_results.keys():
-        search_facts(result, url + search_results[result])
+    if search_results is not None:
+        for result in search_results.keys():
+            search_facts(result, url + search_results[result])
 
 
 def search_facts(search, url):
@@ -69,10 +84,10 @@ def search_facts(search, url):
             driver = open_page(url)
             avail_button = driver.find_element(By.XPATH, '/html/body/div[1]/main/section[2]/div/div/div[2]/div[3]/div/button')
             avail_button.click()
-            WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/header/section/div[3]/div[1]/section[1]/div/section/section/div[3]/div[3]/div/div/div/div/div[2]/button[1]')))
+            WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/header/section/div[3]/div[1]/section[1]/div/section/section/div[3]/div[3]/div/div/div/div/div[2]/button[1]')))
             pick_up_button = driver.find_element(By.XPATH, '/html/body/div[1]/header/section/div[3]/div[1]/section[1]/div/section/section/div[3]/div[3]/div/div/div/div/div[2]/button[1]')
             pick_up_button.click()
-            zipcode_bar = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/header/section/div[3]/div[3]/div/div/div[3]/div[1]/div[1]/input")))
+            zipcode_bar = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/header/section/div[3]/div[3]/div/div/div[3]/div[1]/div[1]/input")))
             zipcode_button = driver.find_element(By.XPATH, '/html/body/div[1]/header/section/div[3]/div[3]/div/div/div[3]/div[1]/div[1]/span[2]/button')
             zipcode_bar.click()
             zipcode_bar.send_keys(MAX_ZIPCODE)
