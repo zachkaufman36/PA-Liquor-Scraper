@@ -13,7 +13,7 @@ if not os.path.isdir("output"):
     os.mkdir("output")
 output_file = "valid_stores_" + str(datetime.now().date()) + ".txt"
 output_file_name = os.path.join("output", output_file)
-TEST = True
+TEST = False
 MAX_ZIPCODE = '19103'
 
 
