@@ -58,7 +58,6 @@ def search_results(url, search):
     
     except:
         error_writing()
-        driver.quit()
 
 
 def error_writing():
@@ -128,6 +127,7 @@ def search_facts(search, url):
                                 # file.write(f"Google Maps: {hyper_link['href']}\n") 
                                 file.write("-" * 20)
                                 file.write("\n")
+            driver.quit()
 
         except:
             file.write("-" * 20)
@@ -136,9 +136,7 @@ def search_facts(search, url):
             file.write("-" * 20)
             file.write("\n")
 
-        driver.quit()
-
-
+        
 def main():
     with open('input_liquors.txt', "r") as file:
         inputs = file.readlines()
